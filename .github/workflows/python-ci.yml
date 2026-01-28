@@ -1,0 +1,48 @@
+name: Python CI
+
+# 1. 触发条件：当推送到 main 分支或发起 Pull Request 时触发
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# 2. 定义任务
+jobs:
+  build:
+    # 运行在最新的 Ubuntu 系统上
+    runs-on: ubuntu-latest
+
+    steps:
+      # 步骤 1: 拉取代码
+      - uses: actions/checkout@v4
+
+      # 步骤 2: 设置 Python 环境
+      # 这里指定 Python 3.9，你可以根据项目需求改成 3.8, 3.10 等
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+          # 缓存 pip 依赖，加快后续构建速度
+          cache: 'pip'
+
+      # 步骤 3: 安装依赖
+      # 检查是否存在 requirements.txt 并安装
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      # 步骤 4: 运行测试 (假设你使用 pytest)
+      # - name: Run tests
+     #    run: |
+      #     # 如果有 tests 目录或 pytest.ini，运行测试
+      #     pip install pytest pytest-cov
+      #     pytest --verbose"""
+
+      # 步骤 5: 代码检查 (可选，如果有 flake8)
+      - name: Lint with flake8
+        run: |
+          pip install flake8
+          # 忽略 E501 (行太长) 错误，可根据需要调整
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
