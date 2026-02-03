@@ -1,5 +1,9 @@
 pipeline {
-    agent any // 表示可以在任何可用的 Jenkins 节点上运行
+    agent {
+        docker {
+            image 'python:3.12' // 或者 python:3.11-slim
+        }
+    }
 
     stages {
         // 阶段 1: 拉取代码
