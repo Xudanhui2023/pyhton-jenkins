@@ -24,8 +24,8 @@ pipeline {
                     rm -rf /var/lib/apt/lists/*
 
                     # 创建软链接（可选）
-                    ln -s /usr/bin/python3 /usr/bin/python && \
-                        ln -s /usr/bin/pip3 /usr/bin/pip
+                    sudo ln -s /usr/bin/python3 /usr/bin/python && \
+                      sudo  ln -s /usr/bin/pip3 /usr/bin/pip
 
                     # 验证安装
                     python --version && pip --version
