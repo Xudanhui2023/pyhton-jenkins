@@ -15,12 +15,10 @@ pipeline {
             steps {
                 script {
                     // 安装必要组件
-                    sh '''
-                    echo "安装 Python 和 Flask..."
-                    apt-get update
-                    apt-get install -y python3 python3-pip
-                    pip3 install flask
-                    '''
+                   sh '''
+                    echo "安装 Python 依赖..."
+                        pip3 install -r requirements.txt  # 直接使用容器内已有的 Python 环境安装依赖
+                      '''
 
                     // 运行简单测试
                     sh '''
