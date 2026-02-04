@@ -16,20 +16,9 @@ pipeline {
                 script {
                     // 安装必要组件
                    sh '''
-                    apt-get update && \
-                    apt-get install -y \
-                    python3 \
-                    python3-pip && \
-                    apt-get clean && \
-                    rm -rf /var/lib/apt/lists/*
-
-                    # 创建软链接（可选）
-                    sudo ln -s /usr/bin/python3 /usr/bin/python && \
-                      sudo  ln -s /usr/bin/pip3 /usr/bin/pip
-
-                    # 验证安装
-                    python --version && pip --version
-                    echo "安装 Python 依赖..."
+                    echo "1. 查找 pip 命令:"
+                    which pip || echo "pip 命令未找到"
+                    which pip3 || echo "pip3 命令未找到"
                         pip3 install -r requirements.txt  # 直接使用容器内已有的 Python 环境安装依赖
 
                       '''
