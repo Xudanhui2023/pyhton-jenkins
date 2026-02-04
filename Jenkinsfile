@@ -16,20 +16,16 @@ pipeline {
                 script {
                     // 安装必要组件
                    sh '''
-                    apt-get update && \
-                    apt-get install -y \
-                    python3 \
-                    python3-pip && \
-                    apt-get clean && \
-                    rm -rf /var/lib/apt/lists/*
-
-                    # 创建软链接（可选）
-                    sudo ln -s /usr/bin/python3 /usr/bin/python && \
-                      sudo  ln -s /usr/bin/pip3 /usr/bin/pip
-
-                    # 验证安装
-                    python --version && pip --version
-                    echo "安装 Python 依赖..."
+                echo "=== 当前 Agent 信息 ==="
+                echo "节点名称: $NODE_NAME"
+                echo "节点标签: $NODE_LABELS"
+                echo "工作空间: $WORKSPACE"
+                echo "主机名: $(hostname)"
+                echo "容器ID: $(cat /etc/hostname 2>/dev/null || hostname)"
+                echo "当前目录: $(pwd)"
+                echo "用户: $(whoami)"
+                echo "进程:"
+                ps aux
                         pip3 install -r requirements.txt  # 直接使用容器内已有的 Python 环境安装依赖
 
                       '''
