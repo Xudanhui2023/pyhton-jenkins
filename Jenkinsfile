@@ -18,6 +18,19 @@ pipeline {
                    sh '''
                     echo "安装 Python 依赖..."
                         pip3 install -r requirements.txt  # 直接使用容器内已有的 Python 环境安装依赖
+                        RUN apt-get update && \
+                    apt-get install -y \
+                    python3 \
+                    python3-pip && \
+                    apt-get clean && \
+                    rm -rf /var/lib/apt/lists/*
+
+                    # 创建软链接（可选）
+                    RUN ln -s /usr/bin/python3 /usr/bin/python && \
+                        ln -s /usr/bin/pip3 /usr/bin/pip
+
+                    # 验证安装
+                    RUN python --version && pip --version
                       '''
 
                     // 运行简单测试
