@@ -1,30 +1,45 @@
 pipeline {
-    // 关键配置：告诉 Jenkins 去 Docker Hub 拉取 python:3.9-slim 镜像来运行任务
-    agent {
-        docker {
-            image 'python:3.12'
-        }
-    }
+    agent any
+
     stages {
-        stage('检出代码') {
-            steps {
-                checkout scm
-            }
-        }
+        // 阶段1: 查看代码
         stage('查看代码') {
             steps {
+                echo '检查代码文件...'
                 sh 'cat app.py'
             }
         }
-        stage('安装依赖') {
-            steps {
-                sh 'pip install -r requirements.txt'
-            }
-        }
+
+        // 阶段2: 运行测试
         stage('运行测试') {
             steps {
-                sh 'python app.py'
+                script {
+                    // 安装必要组件
+                   sh '''
+                    echo "安装 Python 依赖..."
+                        pip3 install -r requirements.txt  # 直接使用容器内已有的 Python 环境安装依赖
+                      '''
+
+                    // 运行简单测试
+                    sh '''
+                    echo "运行应用测试..."
+                    python3 -c "
+try:
+    from app import app
+    print('✅ Flask 应用导入成功')
+except Exception as e:
+    print(f'❌ 导入失败: {e}')
+    exit(1)
+                    "
+                    '''
+                }
             }
+        }
+    }
+
+    post {
+        always {
+            echo '✅ 流程完成'
         }
     }
 }
