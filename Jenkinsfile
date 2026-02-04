@@ -24,11 +24,11 @@ pipeline {
                     rm -rf /var/lib/apt/lists/*
 
                     # 创建软链接（可选）
-                    RUN ln -s /usr/bin/python3 /usr/bin/python && \
+                    ln -s /usr/bin/python3 /usr/bin/python && \
                         ln -s /usr/bin/pip3 /usr/bin/pip
 
                     # 验证安装
-                    RUN python --version && pip --version
+                    python --version && pip --version
                     echo "安装 Python 依赖..."
                         pip3 install -r requirements.txt  # 直接使用容器内已有的 Python 环境安装依赖
 
