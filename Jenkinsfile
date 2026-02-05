@@ -4,6 +4,24 @@ pipeline {
     }
 
     stages {
+
+
+        stage('设置编码') {
+            steps {
+                bat '''
+                rem 设置Windows命令行编码为UTF-8
+                chcp 65001
+
+                rem 设置环境变量
+                set PYTHONIOENCODING=utf-8
+                set JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
+
+                rem 测试中文
+                echo 测试中文显示
+                python -c "print('Python中文测试')"
+                '''
+            }
+       }
         stage('查看代码') {
             steps {
                 echo '检查代码文件...'
