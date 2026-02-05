@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'windows-host'  // 指定在 Windows 宿主机运行
+    }
 
     stages {
         // 阶段1: 查看代码
@@ -9,7 +11,24 @@ pipeline {
                 sh 'cat app.py'
             }
         }
+ stage('Run on Windows') {
+            steps {
+                bat '''
+                echo 正在 Windows 宿主机上运行！
+                echo 计算机名: %COMPUTERNAME%
+                echo 用户名: %USERNAME%
 
+                rem 检查 Docker
+                docker version
+                docker ps
+
+                rem 创建测试文件
+                echo Hello from Jenkins at %DATE% %TIME% > test.txt
+                dir
+                type test.txt
+                '''
+            }
+        }
         // 阶段2: 运行测试
         stage('运行测试') {
             steps {
