@@ -8,7 +8,7 @@ pipeline {
         stage('查看代码') {
             steps {
                 echo '检查代码文件...'
-                sh 'cat app.py'
+                bat 'cat app.py'
             }
         }
  stage('Run on Windows') {
@@ -34,7 +34,7 @@ pipeline {
             steps {
                 script {
                     // 安装必要组件
-                   sh '''
+                   bat '''
                 echo "=== 当前 Agent 信息 ==="
                 echo "节点名称: $NODE_NAME"
                 echo "节点标签: $NODE_LABELS"
@@ -50,7 +50,7 @@ pipeline {
                       '''
 
                     // 运行简单测试
-                    sh '''
+                    bat '''
                     echo "运行应用测试..."
                     python3 -c "
 try:
